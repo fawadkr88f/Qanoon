@@ -70,25 +70,26 @@ export default function HomePage() {
             Clinical Law of Therapeutics
           </span>
           <h2 className="text-3xl font-black tracking-tight text-slate-900">
-            The Hexagonal 3-Hop Antipodal Rule
+            Clinical Law of Functional Therapeutics
           </h2>
           <p className="text-sm leading-relaxed text-slate-600">
-            In classical QMA physiology developed by Hakim Inayatullah Naseem Suharwardi and codified by
-            Hakim Muhammad Kabiruddin and Hakim Inqilab Sabir Multani, a diseased state (<strong>Tehreek</strong>)
-            is never treated with direct suppression.
+            In classical QMA physiology codified by Hakim Inqilab Sabir Multani, a diseased hyperactive state (<strong>Tehreek</strong>)
+            does not exist alone in the body. At any given time, the body exhibits either <strong>Tehreek &amp; Tehleel</strong> or <strong>Tehreek &amp; Taskeen</strong>.
           </p>
           <div className="space-y-3 rounded-2xl bg-slate-50 p-5 text-xs text-slate-700 border border-slate-200">
             <p>
               <strong>Mechanical Stimulations (تحریک میکانیکی / مادی - Orders 1, 3, 5):</strong> When stimulation is in
               odd-numbered orders, the organ located <strong>2 hops further</strong> enters <strong>Tehleel (تحلیل - Depletion)</strong>.
+              Medication and therapeutic diet are administered directly to this <strong>Tehleel area</strong>.
             </p>
             <p>
               <strong>Chemical Stimulations (تحریک کیمیاوی - Orders 2, 4, 6):</strong> When stimulation is in
               even-numbered orders, the organ located <strong>2 hops further</strong> enters <strong>Taskeen (تسکین - Sedation)</strong>.
+              Medication and therapeutic diet are administered directly to this <strong>Taskeen area</strong>.
             </p>
             <p>
-              <strong>Antipodal Balancing Target (+3 Hops):</strong> Stimulating the organ located 3 steps across in the
-              hexagon sedates the diseased tissue and restores systemic equilibrium through targeted diet and medicine.
+              <strong>Restoration of Equilibrium:</strong> By reviving the depleted (Tehleel) or dormant (Taskeen) organ,
+              the excessive pathological humour at the Tehreek site is naturally resolved without suppression.
             </p>
           </div>
           <div className="pt-2">

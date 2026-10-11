@@ -121,20 +121,20 @@ export const TRIAD_COPY = {
     urdu: 'تحریک',
     state: 'Hyperactive / Stimulated',
     description:
-      'The currently diseased, stimulated organ producing excess pathological humour. Orders 1, 3, 5 are Mechanical (میکانیکی); Orders 2, 4, 6 are Chemical (کیمیاوی).',
+      'The currently stimulated, diseased organ producing excess pathological humour. Orders 1, 3, 5 are Mechanical (میکانیکی); Orders 2, 4, 6 are Chemical (کیمیاوی). At a given time, it is paired with either Tehleel or Taskeen.',
   },
   tehleel: {
     label: 'Tehleel',
     urdu: 'تحلیل',
     state: 'Dissolving / Depleted',
     description:
-      'In Mechanical stimulation (Orders 1, 3, 5), the organ located 2 hops further in the cycle undergoes Tehleel (depletion/dissolution).',
+      'In Mechanical stimulation (Orders 1, 3, 5), the organ located 2 hops further in the cycle undergoes Tehleel (depletion/dissolution). Medication and dietary regimen are administered directly to this Tehleel area.',
   },
   taskeen: {
     label: 'Taskeen',
     urdu: 'تسکین',
     state: 'Dormant / Sedated',
     description:
-      'In Chemical stimulation (Orders 2, 4, 6), the organ located 2 hops further in the cycle undergoes Taskeen (sedation/dormancy). Stimulating the opposite organ (+3 hops) restores overall systemic balance.',
+      'In Chemical stimulation (Orders 2, 4, 6), the organ located 2 hops further in the cycle undergoes Taskeen (sedation/dormancy). Medication and dietary regimen are administered directly to this Taskeen area.',
   },
 } as const;

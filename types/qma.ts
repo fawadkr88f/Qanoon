@@ -53,7 +53,7 @@ export interface QMAOrder {
 /** Stimulation classification in Qanoon-e-Mufrad Aza */
 export type StimulationType = 'mechanical' | 'chemical';
 
-/** Roles of the orders involved in the QMA triad. */
+/** Roles of the orders involved in the QMA cycle. */
 export type TriadRole = 'tehreek' | 'tehleel' | 'taskeen';
 
 export interface QMATriad {
@@ -65,12 +65,22 @@ export interface QMATriad {
    * Orders 2, 4, 6 = Chemical (تحریک کیمیاوی)
    */
   readonly stimulationType: StimulationType;
-  /** Tehleel — dissolving / depleted state (2 hops further for Mechanical). */
-  readonly tehleel: QMAOrder;
-  /** Taskeen — dormant / sedated state (2 hops further for Chemical; +3 hops antipodal therapeutic balancing target). */
-  readonly taskeen: QMAOrder;
-  /** The 2-hop further organ from the active Tehreek. */
+  /**
+   * Active secondary state paired with Tehreek at a time:
+   * - In Mechanical Stimulation (1, 3, 5): Tehreek is paired with Tehleel at 2 hops further.
+   * - In Chemical Stimulation (2, 4, 6): Tehreek is paired with Taskeen at 2 hops further.
+   */
+  readonly activePairedRole: 'tehleel' | 'taskeen';
+  /** The 2-hop further organ from the active Tehreek (which has Tehleel in Mechanical, or Taskeen in Chemical). */
   readonly twoHopOrgan: QMAOrder;
+  /** Tehleel organ (present in Mechanical stimulation at 2 hops). Null or inactive in Chemical state. */
+  readonly tehleel?: QMAOrder;
+  /** Taskeen organ (present in Chemical stimulation at 2 hops). Null or inactive in Mechanical state. */
+  readonly taskeen?: QMAOrder;
+  /** The curative medication/diet target organ (given to the Tehleel organ in Mechanical, or Taskeen organ in Chemical). */
+  readonly targetOrder: QMAOrder;
+  /** The role of the medication target ('tehleel' or 'taskeen'). */
+  readonly targetRole: 'tehleel' | 'taskeen';
 }
 
 /* -------------------------------------------------------------------------- */

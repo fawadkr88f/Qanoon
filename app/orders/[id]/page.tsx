@@ -35,7 +35,7 @@ export default async function OrderDetailPage({ params }: OrderPageProps) {
 
   const order = getOrder(num);
   const triad = resolveTriad(order.id);
-  const targetOrder = triad.taskeen;
+  const targetOrder = triad.targetOrder;
   // Ghaza matching this order's temperament
   const diet = getDietaryPlan(order.id);
   const formulations = getFormulationsForOrder(order.id);
@@ -67,19 +67,29 @@ export default async function OrderDetailPage({ params }: OrderPageProps) {
         </p>
       </div>
 
-      {/* 3-Hop Triad Balancing Mechanism */}
+      {/* Therapeutic Law of Treatment */}
       <section className="grid gap-8 lg:grid-cols-2 items-center rounded-3xl border border-slate-200 bg-slate-50/50 p-8">
         <div className="space-y-4">
           <span className="text-xs font-bold uppercase tracking-wider text-brand-700">
-            Antipodal Balancing
+            Therapeutic Law of Treatment
           </span>
           <h2 className="text-2xl font-black text-slate-900">
-            3-Hop Therapeutic Rule for Order {order.id}
+            Clinical Dynamics for Order {order.id}
           </h2>
           <p className="text-xs leading-relaxed text-slate-600">
-            When a patient is diagnosed with hyperactivity in Order {order.id} (Tehreek), the organ in Order {triad.tehleel.id}{' '}
-            enters depletion (Tehleel). To restore balance, therapy stimulates the dormant organ at Order {targetOrder.id}{' '}
-            (Taskeen), located 3 steps away.
+            {triad.stimulationType === 'mechanical' ? (
+              <>
+                When a patient has Mechanical Stimulation in Order {order.id} (Tehreek), the paired state in the body is{' '}
+                <strong>Tehleel (Depletion)</strong> in Order {triad.twoHopOrgan.id} ({triad.twoHopOrgan.classicalName}).
+                Medication and therapy are given to this <strong>Tehleel area</strong> to revive the depleted tissue.
+              </>
+            ) : (
+              <>
+                When a patient has Chemical Stimulation in Order {order.id} (Tehreek), the paired state in the body is{' '}
+                <strong>Taskeen (Sedation)</strong> in Order {triad.twoHopOrgan.id} ({triad.twoHopOrgan.classicalName}).
+                Medication and therapy are given to this <strong>Taskeen area</strong> to revive the dormant tissue.
+              </>
+            )}
           </p>
 
           <div className="rounded-xl bg-white p-4 border border-slate-200 text-xs space-y-2">
@@ -90,7 +100,7 @@ export default async function OrderDetailPage({ params }: OrderPageProps) {
               </span>
             </p>
             <p>
-              <strong>2-Hop Organ Action:</strong>{' '}
+              <strong>Paired Secondary State:</strong>{' '}
               {triad.stimulationType === 'mechanical' ? (
                 <>Order {triad.twoHopOrgan.id} ({triad.twoHopOrgan.classicalName}) enters <strong>Tehleel (تحلیل - Depletion)</strong></>
               ) : (
@@ -98,7 +108,7 @@ export default async function OrderDetailPage({ params }: OrderPageProps) {
               )}
             </p>
             <p>
-              <strong>Curative Antipodal Target (+3 Hops):</strong>{' '}
+              <strong>Medication Target ({triad.targetRole.toUpperCase()} Area):</strong>{' '}
               <Link href={`/orders/${targetOrder.id}`} className="font-bold text-brand-700 hover:underline">
                 Order {targetOrder.id} ({targetOrder.classicalName}) →
               </Link>

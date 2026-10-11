@@ -113,14 +113,20 @@ export function orderFromTissues(primary: TissueType, secondary: TissueType): QM
 }
 
 /**
- * Resolves the QMA Triad with Mechanical vs Chemical stimulation logic:
- * 1. If stimulation is in Nr. 1, 3, 5 (Mechanical):
- *    - The organ 2 hops further undergoes Tehleel (تحلیل).
- *    - The opposite organ (3 hops further) is in Taskeen (تسکین).
- * 2. If stimulation is in Nr. 2, 4, 6 (Chemical):
- *    - The organ 2 hops further undergoes Taskeen (تسکین).
- *    - The organ 1 hop further undergoes Tehleel (تحلیل).
- * 3. The 3-hop opposite remains the antipodal therapeutic target for balanced restoration (Ghaza & Formula).
+ * Resolves the active clinical state in QMA:
+ *
+ * "At a time, in the body there will be either Tehreek & Taskeen, or Tehreek & Tehleel.
+ *  The medication will be given either to the Tehleel or Taskeen area."
+ *
+ * 1. If stimulation is in Nr. 1, 3, 5 (Mechanical Stimulations - تحریک میکانیکی / مادی):
+ *    - The state is **Tehreek & Tehleel**.
+ *    - The organ 2 hops further enters **Tehleel** (تحلیل).
+ *    - The medication & dietary treatment is directed to the **Tehleel** organ (2 hops further).
+ *
+ * 2. If stimulation is in Nr. 2, 4, 6 (Chemical Stimulations - تحریک کیمیاوی):
+ *    - The state is **Tehreek & Taskeen**.
+ *    - The organ 2 hops further enters **Taskeen** (تسکین).
+ *    - The medication & dietary treatment is directed to the **Taskeen** organ (2 hops further).
  */
 export function resolveTriad(tehreekId: OrderId): QMATriad {
   const tehreek = getOrder(tehreekId);
@@ -128,18 +134,33 @@ export function resolveTriad(tehreekId: OrderId): QMATriad {
   const twoHopId = twoHop(tehreekId);
   const twoHopOrgan = getOrder(twoHopId);
 
-  // If Mechanical (1,3,5): 2 hops further = Tehleel; opposite (+3 hops) = Taskeen
-  // If Chemical (2,4,6): 2 hops further = Taskeen; next in cycle (+1 hop) = Tehleel
-  const tehleel = stimulationType === 'mechanical' ? twoHopOrgan : getOrder(nextInCycle(tehreekId));
-  const taskeen = stimulationType === 'chemical' ? twoHopOrgan : getOrder(threeHop(tehreekId));
-
-  return {
-    tehreek,
-    stimulationType,
-    tehleel,
-    taskeen,
-    twoHopOrgan,
-  };
+  if (stimulationType === 'mechanical') {
+    // Orders 1, 3, 5: Pair is Tehreek & Tehleel.
+    // Organ 2 hops further has Tehleel. Medication is given to the Tehleel organ.
+    return {
+      tehreek,
+      stimulationType,
+      activePairedRole: 'tehleel',
+      twoHopOrgan,
+      tehleel: twoHopOrgan,
+      taskeen: undefined,
+      targetOrder: twoHopOrgan,
+      targetRole: 'tehleel',
+    };
+  } else {
+    // Orders 2, 4, 6: Pair is Tehreek & Taskeen.
+    // Organ 2 hops further has Taskeen. Medication is given to the Taskeen organ.
+    return {
+      tehreek,
+      stimulationType,
+      activePairedRole: 'taskeen',
+      twoHopOrgan,
+      tehleel: undefined,
+      taskeen: twoHopOrgan,
+      targetOrder: twoHopOrgan,
+      targetRole: 'taskeen',
+    };
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -315,7 +336,7 @@ export function buildAssessmentResult(
 
   const tehreek = orderFromTissues(primary, secondary);
   const triad = resolveTriad(tehreek.id);
-  const target = getOrder(threeHop(tehreek.id));
+  const target = triad.targetOrder;
   const bowelStatus = deriveBowelStatus(answers, questions);
 
   const answered: AnsweredItem[] = questions.flatMap((q) => {

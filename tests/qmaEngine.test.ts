@@ -60,38 +60,62 @@ describe('3-hop arithmetic', () => {
       expect(triad.stimulationType).toBe(expectedType);
     });
 
-    it('in Mechanical stimulations (1, 3, 5), 2-hop organ has Tehleel', () => {
+    it('in Mechanical stimulations (1, 3, 5), body pairs Tehreek & Tehleel; target is Tehleel (2 hops)', () => {
       // Order 1 -> 2 hops further is 3 (Tehleel)
       const t1 = resolveTriad(1);
-      expect(t1.tehleel.id).toBe(3);
+      expect(t1.activePairedRole).toBe('tehleel');
+      expect(t1.tehleel?.id).toBe(3);
+      expect(t1.taskeen).toBeUndefined();
       expect(t1.twoHopOrgan.id).toBe(3);
+      expect(t1.targetOrder.id).toBe(3);
+      expect(t1.targetRole).toBe('tehleel');
 
       // Order 3 -> 2 hops further is 5 (Tehleel)
       const t3 = resolveTriad(3);
-      expect(t3.tehleel.id).toBe(5);
+      expect(t3.activePairedRole).toBe('tehleel');
+      expect(t3.tehleel?.id).toBe(5);
+      expect(t3.taskeen).toBeUndefined();
       expect(t3.twoHopOrgan.id).toBe(5);
+      expect(t3.targetOrder.id).toBe(5);
+      expect(t3.targetRole).toBe('tehleel');
 
       // Order 5 -> 2 hops further is 1 (Tehleel)
       const t5 = resolveTriad(5);
-      expect(t5.tehleel.id).toBe(1);
+      expect(t5.activePairedRole).toBe('tehleel');
+      expect(t5.tehleel?.id).toBe(1);
+      expect(t5.taskeen).toBeUndefined();
       expect(t5.twoHopOrgan.id).toBe(1);
+      expect(t5.targetOrder.id).toBe(1);
+      expect(t5.targetRole).toBe('tehleel');
     });
 
-    it('in Chemical stimulations (2, 4, 6), 2-hop organ has Taskeen', () => {
+    it('in Chemical stimulations (2, 4, 6), body pairs Tehreek & Taskeen; target is Taskeen (2 hops)', () => {
       // Order 2 -> 2 hops further is 4 (Taskeen)
       const t2 = resolveTriad(2);
-      expect(t2.taskeen.id).toBe(4);
+      expect(t2.activePairedRole).toBe('taskeen');
+      expect(t2.taskeen?.id).toBe(4);
+      expect(t2.tehleel).toBeUndefined();
       expect(t2.twoHopOrgan.id).toBe(4);
+      expect(t2.targetOrder.id).toBe(4);
+      expect(t2.targetRole).toBe('taskeen');
 
       // Order 4 -> 2 hops further is 6 (Taskeen)
       const t4 = resolveTriad(4);
-      expect(t4.taskeen.id).toBe(6);
+      expect(t4.activePairedRole).toBe('taskeen');
+      expect(t4.taskeen?.id).toBe(6);
+      expect(t4.tehleel).toBeUndefined();
       expect(t4.twoHopOrgan.id).toBe(6);
+      expect(t4.targetOrder.id).toBe(6);
+      expect(t4.targetRole).toBe('taskeen');
 
       // Order 6 -> 2 hops further is 2 (Taskeen)
       const t6 = resolveTriad(6);
-      expect(t6.taskeen.id).toBe(2);
+      expect(t6.activePairedRole).toBe('taskeen');
+      expect(t6.taskeen?.id).toBe(2);
+      expect(t6.tehleel).toBeUndefined();
       expect(t6.twoHopOrgan.id).toBe(2);
+      expect(t6.targetOrder.id).toBe(2);
+      expect(t6.targetRole).toBe('taskeen');
     });
   });
 });
@@ -194,14 +218,16 @@ describe('buildAssessmentResult', () => {
     expect(result.ranking).toEqual(['azlati', 'aasabi', 'ghudi']);
   });
 
-  it('resolves Tehreek 2 → target 5 with Mulyan No. 5 and Ghaza 5', () => {
+  it('resolves Tehreek 2 → Chemical stimulation → paired Taskeen target 4 with Mulyan No. 4 and Ghaza 4', () => {
     expect(result.triad.tehreek.id).toBe(2);
-    expect(result.targetOrder.id).toBe(5);
+    expect(result.triad.stimulationType).toBe('chemical');
+    expect(result.triad.targetRole).toBe('taskeen');
+    expect(result.targetOrder.id).toBe(4);
     expect(result.bowelStatus).toBe('constipated');
-    expect(result.suggestedFormulation.name).toBe('Mulyan No. 5');
+    expect(result.suggestedFormulation.name).toBe('Mulyan No. 4');
     expect(result.suggestedFormulation.practitionerOnly).toBe(false);
-    expect(result.diet.ghazaNo).toBe(5);
-    expect(result.diet.curesOrder).toBe(2);
+    expect(result.diet.ghazaNo).toBe(4);
+    expect(result.diet.curesOrder).toBe(1);
   });
 
   it('is deterministic for an injected clock', () => {

@@ -127,13 +127,15 @@ export function AssessmentResultView({ result, onRetake }: AssessmentResultViewP
             <div className="mt-3 rounded-lg border border-slate-200 bg-white p-3 text-[11px] leading-relaxed text-slate-600">
               {triad.stimulationType === 'mechanical' ? (
                 <>
-                  <strong>Mechanical Stimulation Rule (Orders 1, 3, 5):</strong> Stimulating Order {triad.tehreek.id} causes
-                  the organ 2 hops further (<strong>Order {triad.tehleel.id} - {triad.tehleel.classicalName}</strong>) to enter <em>Tehleel</em> (depletion).
+                  <strong>Mechanical Stimulation (Orders 1, 3, 5):</strong> Stimulating Order {triad.tehreek.id} causes
+                  the organ 2 hops further (<strong>Order {triad.twoHopOrgan.id} - {triad.twoHopOrgan.classicalName}</strong>) to enter <em>Tehleel</em> (depletion).
+                  Medication &amp; therapeutic diet are therefore directed to this <strong>Tehleel</strong> area.
                 </>
               ) : (
                 <>
-                  <strong>Chemical Stimulation Rule (Orders 2, 4, 6):</strong> Stimulating Order {triad.tehreek.id} causes
-                  the organ 2 hops further (<strong>Order {triad.taskeen.id} - {triad.taskeen.classicalName}</strong>) to enter <em>Taskeen</em> (sedation).
+                  <strong>Chemical Stimulation (Orders 2, 4, 6):</strong> Stimulating Order {triad.tehreek.id} causes
+                  the organ 2 hops further (<strong>Order {triad.twoHopOrgan.id} - {triad.twoHopOrgan.classicalName}</strong>) to enter <em>Taskeen</em> (sedation).
+                  Medication &amp; therapeutic diet are therefore directed to this <strong>Taskeen</strong> area.
                 </>
               )}
             </div>
@@ -142,7 +144,7 @@ export function AssessmentResultView({ result, onRetake }: AssessmentResultViewP
           <div className="rounded-2xl border border-brand-300 bg-brand-50/40 p-6 shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold uppercase tracking-wider text-brand-900">
-                3-Hop Antipodal Target (Prescription)
+                Therapeutic Target ({triad.targetRole === 'tehleel' ? 'Tehleel Area' : 'Taskeen Area'})
               </span>
               <Badge tone="brand">Target Order {targetOrder.id}</Badge>
             </div>
@@ -153,8 +155,17 @@ export function AssessmentResultView({ result, onRetake }: AssessmentResultViewP
               {targetOrder.systemEn} · <Urdu>{targetOrder.termUrdu}</Urdu>
             </p>
             <p className="mt-3 text-xs leading-relaxed text-slate-600">
-              By stimulating Order {targetOrder.id} ({targetOrder.temperament.en}), the hyperactive{' '}
-              {triad.tehreek.classicalName} tissue is gently forced into sedation, restoring systemic humoral equilibrium.
+              {triad.stimulationType === 'mechanical' ? (
+                <>
+                  Under Mechanical Stimulation in {triad.tehreek.classicalName}, the paired pathological state is{' '}
+                  <strong>Tehleel</strong> at Order {targetOrder.id}. Medication and dietary regimen (Ghaza No. {targetOrder.id}) are administered to revive and restore this depleted tissue.
+                </>
+              ) : (
+                <>
+                  Under Chemical Stimulation in {triad.tehreek.classicalName}, the paired pathological state is{' '}
+                  <strong>Taskeen</strong> at Order {targetOrder.id}. Medication and dietary regimen (Ghaza No. {targetOrder.id}) are administered to revive and stimulate this dormant tissue.
+                </>
+              )}
             </p>
           </div>
         </div>
@@ -165,8 +176,7 @@ export function AssessmentResultView({ result, onRetake }: AssessmentResultViewP
             Hexagonal Cycle &amp; Dynamics
           </h3>
           <p className="text-xs text-slate-500 self-start mb-4">
-            Tehreek: State {triad.tehreek.id} ({triad.stimulationType}) ➔ 2-Hop: State {triad.twoHopOrgan.id} (
-            {triad.stimulationType === 'mechanical' ? 'Tehleel' : 'Taskeen'}) ➔ 3-Hop Target: State {targetOrder.id}
+            Tehreek: State {triad.tehreek.id} ({triad.stimulationType}) ➔ Paired Secondary State &amp; Target ({triad.targetRole.toUpperCase()}): State {targetOrder.id} ({targetOrder.classicalName})
           </p>
           <TriadDiagram triad={triad} />
         </div>

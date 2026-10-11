@@ -31,17 +31,17 @@ export function TriadDiagram({ triad, className, title = 'The QMA hexagonal cycl
   const roleOf = (id: OrderId): 'tehreek' | 'tehleel' | 'taskeen' | null => {
     if (!triad) return null;
     if (triad.tehreek.id === id) return 'tehreek';
-    if (triad.tehleel.id === id) return 'tehleel';
-    if (triad.taskeen.id === id) return 'taskeen';
+    if (triad.tehleel && triad.tehleel.id === id) return 'tehleel';
+    if (triad.taskeen && triad.taskeen.id === id) return 'taskeen';
     return null;
   };
 
   const description = triad
-    ? `Six orders arranged in a cycle. Tehreek (hyperactive) is order ${triad.tehreek.id}, ${triad.tehreek.classicalName}. Tehleel (depleted) is order ${triad.tehleel.id}. Taskeen, the therapeutic target three hops across, is order ${triad.taskeen.id}, ${triad.taskeen.classicalName}.`
-    : 'Six compound orders arranged clockwise: 1 Aasabi-Azlati, 2 Azlati-Aasabi, 3 Azlati-Ghudi, 4 Ghudi-Azlati, 5 Ghudi-Aasabi, 6 Aasabi-Ghudi. Each order is balanced by the one directly opposite (three hops away).';
+    ? `Six orders arranged in a cycle. Tehreek (hyperactive) is Order ${triad.tehreek.id} (${triad.tehreek.classicalName}). Active secondary state is ${triad.activePairedRole === 'tehleel' ? 'Tehleel' : 'Taskeen'} at Order ${triad.targetOrder.id} (${triad.targetOrder.classicalName}), which is the curative target for medication.`
+    : 'Six compound orders arranged clockwise: 1 Aasabi-Azlati, 2 Azlati-Aasabi, 3 Azlati-Ghudi, 4 Ghudi-Azlati, 5 Ghudi-Aasabi, 6 Aasabi-Ghudi. Each order is balanced by its active paired organ (2 hops away).';
 
   const from = triad ? polar(triad.tehreek.id - 1, NODE_RADIUS - 26) : null;
-  const to = triad ? polar(triad.taskeen.id - 1, NODE_RADIUS - 26) : null;
+  const to = triad ? polar(triad.targetOrder.id - 1, NODE_RADIUS - 26) : null;
   const hexPoints = QMA_ORDERS.map((_, i) => {
     const p = polar(i, NODE_RADIUS);
     return `${p.x},${p.y}`;
@@ -136,7 +136,7 @@ export function TriadDiagram({ triad, className, title = 'The QMA hexagonal cycl
                   role === 'taskeen' && 'fill-brand-700',
                 )}
               >
-                {role === 'taskeen' ? 'Taskeen · target' : role}
+                {role === 'tehreek' ? 'Tehreek' : `${role} · target`}
               </text>
             ) : null}
           </g>
