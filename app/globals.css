@@ -1,0 +1,153 @@
+@import 'tailwindcss';
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/*  Design tokens                                                            */
+/* ────────────────────────────────────────────────────────────────────────── */
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-urdu: var(--font-nastaliq), 'Noto Nastaliq Urdu', serif;
+}
+
+@theme {
+  /* Deep clinical teal */
+  --color-brand-50: #eef8f7;
+  --color-brand-100: #d5efec;
+  --color-brand-200: #addfd9;
+  --color-brand-300: #7cc8c0;
+  --color-brand-400: #4caba3;
+  --color-brand-500: #2f8f88;
+  --color-brand-600: #23736e;
+  --color-brand-700: #1f5d5a;
+  --color-brand-800: #1c4b49;
+  --color-brand-900: #1a3f3e;
+  --color-brand-950: #0b2424;
+
+  /* Warm parchment accents (classical manuscripts) */
+  --color-sand-50: #fbf8f3;
+  --color-sand-100: #f4ede1;
+  --color-sand-200: #e8d9bf;
+  --color-sand-500: #b8925a;
+  --color-sand-700: #7a5c2e;
+
+  /* Tissue semantic colours */
+  --color-aasabi: #3563c9;
+  --color-aasabi-soft: #e6edfb;
+  --color-azlati: #b8364a;
+  --color-azlati-soft: #fbe8eb;
+  --color-ghudi: #b7790c;
+  --color-ghudi-soft: #fbf1dc;
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/*  Base                                                                     */
+/* ────────────────────────────────────────────────────────────────────────── */
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-slate-200);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-white font-sans text-slate-800 antialiased;
+  }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+
+  [lang='ur'] {
+    font-family: var(--font-urdu);
+    line-height: 2.1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 72rem;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/*  Print — patient observation sheet                                        */
+/* ────────────────────────────────────────────────────────────────────────── */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 12mm 16mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    font-size: 10.5pt;
+  }
+
+  /* Keep tissue bars & badges visible when printing */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    box-shadow: none !important;
+  }
+
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 8pt;
+    color: #555;
+  }
+
+  .print-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-break-before {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  td,
+  th {
+    break-inside: avoid;
+  }
+}
