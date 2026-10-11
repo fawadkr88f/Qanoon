@@ -97,9 +97,9 @@ describe('3-hop arithmetic', () => {
 });
 
 describe('data integrity', () => {
-  it('has 6 orders, 24 formulations and 6 diet plans', () => {
+  it('has 6 orders, 36 formulations (6 orders × 6 degrees) and 6 diet plans', () => {
     expect(QMA_ORDERS).toHaveLength(6);
-    expect(FORMULATIONS).toHaveLength(24);
+    expect(FORMULATIONS).toHaveLength(36);
     expect(DIETARY_PLANS).toHaveLength(6);
   });
 

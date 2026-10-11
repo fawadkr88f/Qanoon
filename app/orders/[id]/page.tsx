@@ -146,7 +146,7 @@ export default async function OrderDetailPage({ params }: OrderPageProps) {
             Formulations for Order {order.id}
           </h2>
           <p className="text-xs text-slate-600">
-            Formulations 1–4 across the 4 therapeutic degrees (Shadeed, Mulyan, Mus-hil, Akseer).
+            Formulations 1–6 across the 6 classical therapeutic degrees (Muharrik, Shadeed, Mulyan, Mus-hil, Akseer, Tiryaq).
           </p>
         </div>
 

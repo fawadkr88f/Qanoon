@@ -5,13 +5,22 @@ import type { Formulation, FormulationDegree, FormulationHazard, OrderId } from 
 export const DEGREE_INFO: Readonly<
   Record<FormulationDegree, { label: string; urdu: string; role: string; practitionerOnly: boolean }>
 > = {
-  shadeed: { label: 'Shadeed', urdu: 'شدید', role: 'Stimulant', practitionerOnly: false },
-  mulyan: { label: 'Mulyan', urdu: 'ملین', role: 'Aperient', practitionerOnly: false },
+  muharrik: { label: 'Muharrik', urdu: 'محرک', role: 'Mild Stimulant', practitionerOnly: false },
+  shadeed: { label: 'Shadeed', urdu: 'شدید', role: 'Intensifier / Stimulant', practitionerOnly: false },
+  mulyan: { label: 'Mulyan', urdu: 'ملین', role: 'Aperient / Laxative', practitionerOnly: false },
   mushil: { label: 'Mus-hil', urdu: 'مسہل', role: 'Purgative', practitionerOnly: true },
-  akseer: { label: 'Akseer', urdu: 'اکسیر', role: 'Elixir', practitionerOnly: true },
+  akseer: { label: 'Akseer', urdu: 'اکسیر', role: 'Elixir / Alterative', practitionerOnly: true },
+  tiryaq: { label: 'Tiryaq', urdu: 'تریاق', role: 'Antidote / Specific', practitionerOnly: false },
 };
 
-export const DEGREE_SEQUENCE: readonly FormulationDegree[] = ['shadeed', 'mulyan', 'mushil', 'akseer'];
+export const DEGREE_SEQUENCE: readonly FormulationDegree[] = [
+  'muharrik',
+  'shadeed',
+  'mulyan',
+  'mushil',
+  'akseer',
+  'tiryaq',
+];
 
 export const HAZARD_LABELS: Readonly<Record<FormulationHazard, string>> = {
   mercury: 'Contains mercury compounds',
@@ -51,7 +60,14 @@ function formula(order: OrderId, degree: FormulationDegree, row: FormulaRow): Fo
 }
 
 export const FORMULATIONS: readonly Formulation[] = [
-  // ── Order 1 ────────────────────────────────────────────────────────────────
+  // ── Order 1 (Aasabi-Azlati / Cold-Dry Nervous) ──────────────────────────────
+  formula(1, 'muharrik', {
+    ingredients: ['Qalmi Shora (Potassium Nitrate)', 'Tukhm Kasni (Chicory seeds)', 'Gul-e-Surkh (Rose petals)'],
+    ratio: '30 g : 50 g : 50 g',
+    singleDose: '500 mg – 1 g',
+    frequency: '2–3× daily with water or sharbat bazoori',
+    purpose: 'Gentle nervous stimulant, soothes hot bilious states, promotes diuresis',
+  }),
   formula(1, 'shadeed', {
     ingredients: ['Post Reetha (Soapnut husk)', 'Kishneez Khushk (Coriander seeds)'],
     ratio: '1:1 (equal parts)',
@@ -82,8 +98,22 @@ export const FORMULATIONS: readonly Formulation[] = [
     purpose: 'Rapid bleeding control, severe burning dysentery, ulceration',
     hazards: ['mineral'],
   }),
+  formula(1, 'tiryaq', {
+    ingredients: ['Phitkari Safaid Biryan (Purified Alum)', 'Maghz Tukhm Kadu (Pumpkin seeds)', 'Gond Kikar (Acacia gum)'],
+    ratio: '40 g : 20 g : 20 g',
+    singleDose: '500 mg – 1 g',
+    frequency: '2–3× daily with water or milk',
+    purpose: 'Neutralize extreme burning toxins, arrest acute bilious bleeding and choleraic diarrhea',
+  }),
 
-  // ── Order 2 ────────────────────────────────────────────────────────────────
+  // ── Order 2 (Azlati-Aasabi / Dry-Cold Muscular) ──────────────────────────────
+  formula(2, 'muharrik', {
+    ingredients: ['Filfil Siah (Black Pepper)', 'Amla Khushk (Dried Gooseberry)', 'Maghz Karanjwa (Bonduc nut kernel)'],
+    ratio: '10 g : 30 g : 30 g',
+    singleDose: '500 mg – 1 g',
+    frequency: '2–3× daily after meals',
+    purpose: 'Stimulate dormant cardiac & muscular tissues, tone gastric sphincters',
+  }),
   formula(2, 'shadeed', {
     ingredients: ['Filfil Siah (Black Pepper)', 'Post Halela Zard (Yellow Myrobalan rind)', 'Amla Khushk (Dried Amla)'],
     ratio: '10 g : 20 g : 30 g (1:2:3)',
@@ -114,8 +144,22 @@ export const FORMULATIONS: readonly Formulation[] = [
     purpose: 'Deep chronic cold phlegm, chronic respiratory catarrh',
     hazards: ['arsenic'],
   }),
+  formula(2, 'tiryaq', {
+    ingredients: ['Post Halela Zard (Yellow Myrobalan)', 'Filfil Siah (Black Pepper)', 'Gilo Khushk (Tinospora)'],
+    ratio: '30 g : 10 g : 20 g',
+    singleDose: '500 mg – 1 g',
+    frequency: '2–3× daily with fresh water',
+    purpose: 'Specific antidote for cold-phlegmatic collapse, cholera, and excessive mucous discharges',
+  }),
 
-  // ── Order 3 ────────────────────────────────────────────────────────────────
+  // ── Order 3 (Azlati-Ghudi / Dry-Warm Muscular) ──────────────────────────────
+  formula(3, 'muharrik', {
+    ingredients: ['Long (Cloves)', 'Darcheeni (Cinnamon)'],
+    ratio: '10 g : 30 g (1:3)',
+    singleDose: '500 mg – 1 g',
+    frequency: '3× daily with kahwa or water',
+    purpose: 'Gentle cardiac and arterial stimulant, dispels cold stomach distension',
+  }),
   formula(3, 'shadeed', {
     ingredients: ['Long (Cloves)', 'Darcheeni (Cinnamon)', 'Javitri (Mace)'],
     ratio: '10 g : 30 g : 20 g (1:3:2)',
@@ -146,8 +190,22 @@ export const FORMULATIONS: readonly Formulation[] = [
     purpose: 'Supreme neuromuscular tonic, treats hypothermia, sexual debility',
     hazards: ['mercury'],
   }),
+  formula(3, 'tiryaq', {
+    ingredients: ['Ajwain Desi (Carom seeds)', 'Podina Khushk (Mint)', 'Gandhak Amlasar (Purified Sulphur)'],
+    ratio: '20 g : 10 g : 10 g',
+    singleDose: '500 mg – 1 g',
+    frequency: '2–3× daily with warm water (Tiryaq-e-Tabkheer)',
+    purpose: 'Crisis remedy for gaseous tabkheer, cardiac spasm, acute indigestion and cold colic',
+  }),
 
-  // ── Order 4 ────────────────────────────────────────────────────────────────
+  // ── Order 4 (Ghudi-Azlati / Warm-Dry Glandular) ─────────────────────────────
+  formula(4, 'muharrik', {
+    ingredients: ['Tezpat (Indian Bay leaf)', 'Rai (Mustard seeds)', 'Ajwain Desi (Carom seeds)'],
+    ratio: '50 g : 50 g : 50 g (equal parts)',
+    singleDose: '500 mg – 1 g',
+    frequency: '2–3× daily after meals',
+    purpose: 'Initiate hepatic warmth, stimulate bile secretion, relieve cold gas and lethargy',
+  }),
   formula(4, 'shadeed', {
     ingredients: ['Gandhak Amlasar (Purified Sulphur)', 'Rai (Mustard seeds)'],
     ratio: '70 g : 50 g (7:5)',
@@ -178,8 +236,22 @@ export const FORMULATIONS: readonly Formulation[] = [
     purpose: 'Intensive blood purification, severe chronic skin lesions',
     hazards: ['mercury'],
   }),
+  formula(4, 'tiryaq', {
+    ingredients: ['Ajwain Desi (Carom seeds)', 'Gandhak Amlasar (Purified Sulphur)', 'Podina (Mint)'],
+    ratio: '40 g : 20 g : 20 g (2:1:1)',
+    singleDose: '500 mg – 1 g',
+    frequency: '3× daily with lukewarm water (Tiryaq-e-Maida)',
+    purpose: 'Rapid gastric antidote, neutralizes acidity and fermented food toxins, clears stomach cramps',
+  }),
 
-  // ── Order 5 ────────────────────────────────────────────────────────────────
+  // ── Order 5 (Ghudi-Aasabi / Warm-Moist Glandular) ────────────────────────────
+  formula(5, 'muharrik', {
+    ingredients: ['Zanjabeel (Dry Ginger)', 'Naushadar (Ammonium Chloride)', 'Filfil Siah (Black Pepper)'],
+    ratio: '50 g : 30 g : 10 g (5:3:1)',
+    singleDose: '500 mg – 1 g',
+    frequency: '2–3× daily after meals',
+    purpose: 'Mild hepatic stimulant, warms digestive fire, breaks cold phlegmatic stagnation',
+  }),
   formula(5, 'shadeed', {
     ingredients: ['Zanjabeel (Dry Ginger)', 'Naushadar (Ammonium Chloride)', 'Filfil Siah (Black Pepper)'],
     ratio: '50 g : 20 g : 10 g (5:2:1)',
@@ -210,8 +282,22 @@ export const FORMULATIONS: readonly Formulation[] = [
     purpose: 'Potent anti-spasmodic, relieves deep muscular aches, chronic arthritis',
     hazards: ['arsenic'],
   }),
+  formula(5, 'tiryaq', {
+    ingredients: ['Haldi (Turmeric)', 'Gond Kikar (Acacia gum)', 'Naushadar (Ammonium Chloride)'],
+    ratio: '50 g : 30 g : 20 g (5:3:2)',
+    singleDose: '500 mg – 1 g',
+    frequency: '2–3× daily with fresh water or green tea (Tiryaq-e-Kabid)',
+    purpose: 'Rapid hepatic restorative antidote, alleviates liver inflammation and dissolves bile duct stones',
+  }),
 
-  // ── Order 6 ────────────────────────────────────────────────────────────────
+  // ── Order 6 (Aasabi-Ghudi / Moist-Warm Nervous) ──────────────────────────────
+  formula(6, 'muharrik', {
+    ingredients: ['Haldi (Turmeric)', 'Gond Kikar (Acacia gum)', 'Sher Khisht (Manna)'],
+    ratio: '50 g : 50 g : 30 g',
+    singleDose: '500 mg – 1 g',
+    frequency: '2–3× daily with water or milk',
+    purpose: 'Soothes nervous irritability, hydrates mucous membranes, relieves urinary scalding',
+  }),
   formula(6, 'shadeed', {
     ingredients: ['Haldi (Turmeric)', 'Gond Kikar (Acacia gum)', 'Chob Zard (Amba Haldi)'],
     ratio: '50 g : 30 g : 20 g (5:3:2)',
@@ -240,5 +326,12 @@ export const FORMULATIONS: readonly Formulation[] = [
     singleDose: '250 mg – 500 mg',
     frequency: 'Twice daily with warm milk',
     purpose: 'Brain and nervous regenerative tonic, relieves dry anxiety, hypertension',
+  }),
+  formula(6, 'tiryaq', {
+    ingredients: ['Post Halela Zard Biryan (Roasted Myrobalan)', 'Zeera Safaid (White Cumin)', 'Ajwain Desi (Carom seeds)'],
+    ratio: '1:1:1 (equal parts)',
+    singleDose: '500 mg – 1 g',
+    frequency: '3× daily with yogurt whey or water (Tiryaq-e-Paichish)',
+    purpose: 'Antidote for severe dysenteric tenesmus, ulcerative colitis cramps, and acute diarrhea',
   }),
 ];

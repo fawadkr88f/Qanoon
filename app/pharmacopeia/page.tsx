@@ -7,7 +7,7 @@ import { MedicalDisclaimer } from '@/components/layout/MedicalDisclaimer';
 export const metadata: Metadata = {
   title: 'Classical Pharmacopeia · Qanoon-e-Mufrad Aza',
   description:
-    'Complete Sabir Multani classical formulation matrix (Orders 1–6, Degrees 1–4) with safety warnings and hazard classifications.',
+    'Complete Sabir Multani classical formulation matrix (Orders 1–6, Degrees 1–6, 36 Formulations) with safety warnings and hazard classifications.',
 };
 
 export default function PharmacopeiaPage() {
@@ -21,17 +21,18 @@ export default function PharmacopeiaPage() {
           Classical Pharmacopeia (Sabir Multani Matrix)
         </h1>
         <p className="text-sm leading-relaxed text-slate-600">
-          The 24 foundational formulations across all six orders and four therapeutic degrees:
-          <strong> Shadeed</strong> (Stimulant), <strong>Mulyan</strong> (Aperient),
-          <strong> Mus-hil</strong> (Purgative), and <strong>Akseer</strong> (Elixir).
+          The 36 foundational formulations across all six orders and six therapeutic degrees:
+          <strong> Muharrik</strong> (Mild Stimulant), <strong>Shadeed</strong> (Intensifier / Stimulant),
+          <strong> Mulyan</strong> (Aperient / Laxative), <strong>Mus-hil</strong> (Purgative),
+          <strong> Akseer</strong> (Elixir / Alterative), and <strong>Tiryaq</strong> (Antidote / Specific).
         </p>
       </div>
 
       <MedicalDisclaimer />
 
       {/* Degrees Explanation */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {(['shadeed', 'mulyan', 'mushil', 'akseer'] as const).map((deg) => {
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {(['muharrik', 'shadeed', 'mulyan', 'mushil', 'akseer', 'tiryaq'] as const).map((deg) => {
           const info = DEGREE_INFO[deg];
           return (
             <div key={deg} className="rounded-xl border border-slate-200 bg-white p-4 space-y-1">
@@ -46,7 +47,7 @@ export default function PharmacopeiaPage() {
               <p className="text-xs text-slate-500">
                 {info.practitionerOnly
                   ? 'High potency / purging; strictly practitioner supervised.'
-                  : 'Standard gentle stimulant / stool softening stage.'}
+                  : 'Standard gentle stimulant, restorative antidote or stool softening stage.'}
               </p>
             </div>
           );

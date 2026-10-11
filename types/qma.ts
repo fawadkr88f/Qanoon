@@ -77,7 +77,7 @@ export interface QMATriad {
 /*  Pharmacopeia                                                              */
 /* -------------------------------------------------------------------------- */
 
-export type FormulationDegree = 'shadeed' | 'mulyan' | 'mushil' | 'akseer';
+export type FormulationDegree = 'muharrik' | 'shadeed' | 'mulyan' | 'mushil' | 'akseer' | 'tiryaq';
 
 export type FormulationHazard = 'mercury' | 'arsenic' | 'croton' | 'strong-purgative' | 'mineral';
 
