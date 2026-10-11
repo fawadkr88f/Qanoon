@@ -79,14 +79,16 @@ export default function HomePage() {
           </p>
           <div className="space-y-3 rounded-2xl bg-slate-50 p-5 text-xs text-slate-700 border border-slate-200">
             <p>
-              <strong>1. Tehreek (تحریک - Hyperactive):</strong> The stimulated, diseased organ causing symptom excess.
+              <strong>Mechanical Stimulations (تحریک میکانیکی / مادی - Orders 1, 3, 5):</strong> When stimulation is in
+              odd-numbered orders, the organ located <strong>2 hops further</strong> enters <strong>Tehleel (تحلیل - Depletion)</strong>.
             </p>
             <p>
-              <strong>2. Tehleel (تحلیل - Depleted):</strong> The organ directly following in cycle, losing vitality.
+              <strong>Chemical Stimulations (تحریک کیمیاوی - Orders 2, 4, 6):</strong> When stimulation is in
+              even-numbered orders, the organ located <strong>2 hops further</strong> enters <strong>Taskeen (تسکین - Sedation)</strong>.
             </p>
             <p>
-              <strong>3. Taskeen (تسکین - Dormant Target):</strong> Exactly 3 hops away in the hexagonal circle.
-              Stimulating this organ forces the hyperactive tissue into natural sedation.
+              <strong>Antipodal Balancing Target (+3 Hops):</strong> Stimulating the organ located 3 steps across in the
+              hexagon sedates the diseased tissue and restores systemic equilibrium through targeted diet and medicine.
             </p>
           </div>
           <div className="pt-2">

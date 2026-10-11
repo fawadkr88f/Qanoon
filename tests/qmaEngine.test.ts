@@ -47,9 +47,52 @@ describe('3-hop arithmetic', () => {
     expect(() => toOrderId(2.5)).toThrow(RangeError);
   });
 
-  it('resolves the full triad', () => {
-    const t = resolveTriad(2);
-    expect([t.tehreek.id, t.tehleel.id, t.taskeen.id]).toEqual([2, 3, 5]);
+  describe('Stimulation logic: Mechanical (1, 3, 5) vs Chemical (2, 4, 6)', () => {
+    it.each<[OrderId, 'mechanical' | 'chemical']>([
+      [1, 'mechanical'],
+      [2, 'chemical'],
+      [3, 'mechanical'],
+      [4, 'chemical'],
+      [5, 'mechanical'],
+      [6, 'chemical'],
+    ])('order %i is classified as %s stimulation', (id, expectedType) => {
+      const triad = resolveTriad(id);
+      expect(triad.stimulationType).toBe(expectedType);
+    });
+
+    it('in Mechanical stimulations (1, 3, 5), 2-hop organ has Tehleel', () => {
+      // Order 1 -> 2 hops further is 3 (Tehleel)
+      const t1 = resolveTriad(1);
+      expect(t1.tehleel.id).toBe(3);
+      expect(t1.twoHopOrgan.id).toBe(3);
+
+      // Order 3 -> 2 hops further is 5 (Tehleel)
+      const t3 = resolveTriad(3);
+      expect(t3.tehleel.id).toBe(5);
+      expect(t3.twoHopOrgan.id).toBe(5);
+
+      // Order 5 -> 2 hops further is 1 (Tehleel)
+      const t5 = resolveTriad(5);
+      expect(t5.tehleel.id).toBe(1);
+      expect(t5.twoHopOrgan.id).toBe(1);
+    });
+
+    it('in Chemical stimulations (2, 4, 6), 2-hop organ has Taskeen', () => {
+      // Order 2 -> 2 hops further is 4 (Taskeen)
+      const t2 = resolveTriad(2);
+      expect(t2.taskeen.id).toBe(4);
+      expect(t2.twoHopOrgan.id).toBe(4);
+
+      // Order 4 -> 2 hops further is 6 (Taskeen)
+      const t4 = resolveTriad(4);
+      expect(t4.taskeen.id).toBe(6);
+      expect(t4.twoHopOrgan.id).toBe(6);
+
+      // Order 6 -> 2 hops further is 2 (Taskeen)
+      const t6 = resolveTriad(6);
+      expect(t6.taskeen.id).toBe(2);
+      expect(t6.twoHopOrgan.id).toBe(2);
+    });
   });
 });
 

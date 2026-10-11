@@ -84,13 +84,21 @@ export default async function OrderDetailPage({ params }: OrderPageProps) {
 
           <div className="rounded-xl bg-white p-4 border border-slate-200 text-xs space-y-2">
             <p>
-              <strong>Morbid Stimulated State (Tehreek):</strong> Order {order.id} ({order.classicalName})
+              <strong>Active State (Tehreek):</strong> Order {order.id} ({order.classicalName}) —{' '}
+              <span className="font-semibold text-brand-800">
+                {triad.stimulationType === 'mechanical' ? 'Mechanical Stimulation (مادی/میکانیکی)' : 'Chemical Stimulation (کیمیاوی)'}
+              </span>
             </p>
             <p>
-              <strong>Depleted State (Tehleel):</strong> Order {triad.tehleel.id} ({triad.tehleel.classicalName})
+              <strong>2-Hop Organ Action:</strong>{' '}
+              {triad.stimulationType === 'mechanical' ? (
+                <>Order {triad.twoHopOrgan.id} ({triad.twoHopOrgan.classicalName}) enters <strong>Tehleel (تحلیل - Depletion)</strong></>
+              ) : (
+                <>Order {triad.twoHopOrgan.id} ({triad.twoHopOrgan.classicalName}) enters <strong>Taskeen (تسکین - Sedation)</strong></>
+              )}
             </p>
             <p>
-              <strong>Curative Target (+3 Hops):</strong>{' '}
+              <strong>Curative Antipodal Target (+3 Hops):</strong>{' '}
               <Link href={`/orders/${targetOrder.id}`} className="font-bold text-brand-700 hover:underline">
                 Order {targetOrder.id} ({targetOrder.classicalName}) →
               </Link>

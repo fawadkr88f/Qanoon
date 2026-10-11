@@ -50,16 +50,27 @@ export interface QMAOrder {
   readonly governingOrgan: string;
 }
 
-/** Roles of the three orders involved in the 3-hop triad. */
+/** Stimulation classification in Qanoon-e-Mufrad Aza */
+export type StimulationType = 'mechanical' | 'chemical';
+
+/** Roles of the orders involved in the QMA triad. */
 export type TriadRole = 'tehreek' | 'tehleel' | 'taskeen';
 
 export interface QMATriad {
   /** Tehreek — hyperactive / stimulated (diagnosed) state. */
   readonly tehreek: QMAOrder;
-  /** Tehleel — dissolving / depleted state (next in cycle). */
+  /**
+   * Stimulation classification:
+   * Orders 1, 3, 5 = Mechanical (تحریک میکانیکی / مادی)
+   * Orders 2, 4, 6 = Chemical (تحریک کیمیاوی)
+   */
+  readonly stimulationType: StimulationType;
+  /** Tehleel — dissolving / depleted state (2 hops further for Mechanical). */
   readonly tehleel: QMAOrder;
-  /** Taskeen — dormant state, +3 hops; the therapeutic target. */
+  /** Taskeen — dormant / sedated state (2 hops further for Chemical; +3 hops antipodal therapeutic balancing target). */
   readonly taskeen: QMAOrder;
+  /** The 2-hop further organ from the active Tehreek. */
+  readonly twoHopOrgan: QMAOrder;
 }
 
 /* -------------------------------------------------------------------------- */

@@ -77,7 +77,12 @@ export function AssessmentResultView({ result, onRetake }: AssessmentResultViewP
               <span className="text-xs font-semibold uppercase tracking-wider text-rose-700">
                 Primary State (Tehreek / تحریک)
               </span>
-              <Badge tone="warning">State {triad.tehreek.id}</Badge>
+              <div className="flex items-center gap-1.5">
+                <Badge tone={triad.stimulationType === 'mechanical' ? 'brand' : 'warning'}>
+                  {triad.stimulationType === 'mechanical' ? 'Mechanical (مادی/میکانیکی)' : 'Chemical (کیمیاوی)'}
+                </Badge>
+                <Badge tone="neutral">State {triad.tehreek.id}</Badge>
+              </div>
             </div>
             <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-900">
               {triad.tehreek.classicalName}
@@ -96,24 +101,48 @@ export function AssessmentResultView({ result, onRetake }: AssessmentResultViewP
                 <p className="font-semibold text-slate-900">{triad.tehreek.dominantHumour}</p>
               </div>
               <div>
-                <span className="text-slate-500">Temperament:</span>
-                <p className="font-semibold text-slate-900">
-                  {triad.tehreek.temperament.en} (<Urdu>{triad.tehreek.temperament.ur}</Urdu>)
+                <span className="text-slate-500">Stimulation Nature:</span>
+                <p className="font-semibold capitalize text-slate-900">
+                  {triad.stimulationType} (Nr. {triad.tehreek.id})
                 </p>
               </div>
               <div>
-                <span className="text-slate-500">Diagnostic Confidence:</span>
-                <p className="font-semibold capitalize text-slate-900">
-                  {confidence.level} {confidence.tieBroken ? '(Tie broken)' : ''}
+                <span className="text-slate-500">
+                  {triad.stimulationType === 'mechanical'
+                    ? '2-Hop Tehleel Organ:'
+                    : '2-Hop Taskeen Organ:'}
+                </span>
+                <p className="font-semibold text-slate-900">
+                  Order {triad.twoHopOrgan.id} ({triad.twoHopOrgan.classicalName})
                 </p>
               </div>
+              <div className="col-span-2 pt-1 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-slate-500">Intake Confidence:</span>
+                <span className="font-semibold capitalize text-slate-800">
+                  {confidence.level} {confidence.tieBroken ? '(biomarker tie-breaker applied)' : ''}
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-3 rounded-lg border border-slate-200 bg-white p-3 text-[11px] leading-relaxed text-slate-600">
+              {triad.stimulationType === 'mechanical' ? (
+                <>
+                  <strong>Mechanical Stimulation Rule (Orders 1, 3, 5):</strong> Stimulating Order {triad.tehreek.id} causes
+                  the organ 2 hops further (<strong>Order {triad.tehleel.id} - {triad.tehleel.classicalName}</strong>) to enter <em>Tehleel</em> (depletion).
+                </>
+              ) : (
+                <>
+                  <strong>Chemical Stimulation Rule (Orders 2, 4, 6):</strong> Stimulating Order {triad.tehreek.id} causes
+                  the organ 2 hops further (<strong>Order {triad.taskeen.id} - {triad.taskeen.classicalName}</strong>) to enter <em>Taskeen</em> (sedation).
+                </>
+              )}
             </div>
           </div>
 
           <div className="rounded-2xl border border-brand-300 bg-brand-50/40 p-6 shadow-xs">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold uppercase tracking-wider text-brand-900">
-                3-Hop Therapeutic Target (Taskeen / تسکین)
+                3-Hop Antipodal Target (Prescription)
               </span>
               <Badge tone="brand">Target Order {targetOrder.id}</Badge>
             </div>
@@ -125,7 +154,7 @@ export function AssessmentResultView({ result, onRetake }: AssessmentResultViewP
             </p>
             <p className="mt-3 text-xs leading-relaxed text-slate-600">
               By stimulating Order {targetOrder.id} ({targetOrder.temperament.en}), the hyperactive{' '}
-              {triad.tehreek.classicalName} tissue is gently forced into sedation (Taskeen), restoring systemic humoral equilibrium.
+              {triad.tehreek.classicalName} tissue is gently forced into sedation, restoring systemic humoral equilibrium.
             </p>
           </div>
         </div>
@@ -133,10 +162,11 @@ export function AssessmentResultView({ result, onRetake }: AssessmentResultViewP
         {/* Hexagonal Triad Visualisation */}
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs flex flex-col items-center justify-center">
           <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 self-start">
-            Hexagonal 3-Hop Triad Diagram
+            Hexagonal Cycle &amp; Dynamics
           </h3>
           <p className="text-xs text-slate-500 self-start mb-4">
-            Tehreek (State {triad.tehreek.id}) ➔ Tehleel (State {triad.tehleel.id}) ➔ Taskeen Target (State {triad.taskeen.id})
+            Tehreek: State {triad.tehreek.id} ({triad.stimulationType}) ➔ 2-Hop: State {triad.twoHopOrgan.id} (
+            {triad.stimulationType === 'mechanical' ? 'Tehleel' : 'Taskeen'}) ➔ 3-Hop Target: State {targetOrder.id}
           </p>
           <TriadDiagram triad={triad} />
         </div>

@@ -50,7 +50,7 @@ export class IncompleteAssessmentError extends Error {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Order arithmetic                                                          */
+/*  Order arithmetic & stimulation classification                            */
 /* -------------------------------------------------------------------------- */
 
 export function isOrderId(value: number): value is OrderId {
@@ -73,9 +73,27 @@ export function threeHop(state: OrderId): OrderId {
   return toOrderId(((state - 1 + HOP_DISTANCE) % ORDER_COUNT) + 1);
 }
 
-/** Next order in the natural cycle (the Tehleel / depleted state). */
+/**
+ * The 2-hop jump rule:
+ *   TwoHops = MOD(state - 1 + 2, 6) + 1
+ * 1→3, 2→4, 3→5, 4→6, 5→1, 6→2.
+ */
+export function twoHop(state: OrderId): OrderId {
+  return toOrderId(((state - 1 + 2) % ORDER_COUNT) + 1);
+}
+
+/** Next order in the natural cycle (1-hop step). */
 export function nextInCycle(state: OrderId): OrderId {
   return toOrderId((state % ORDER_COUNT) + 1);
+}
+
+/**
+ * Stimulation Classification:
+ * - Orders 1, 3, 5: Mechanical Stimulations (تحریک میکانیکی / مادی)
+ * - Orders 2, 4, 6: Chemical Stimulations (تحریک کیمیاوی)
+ */
+export function getStimulationType(orderId: OrderId): 'mechanical' | 'chemical' {
+  return orderId % 2 !== 0 ? 'mechanical' : 'chemical';
 }
 
 export function getOrder(id: OrderId): QMAOrder {
@@ -94,11 +112,33 @@ export function orderFromTissues(primary: TissueType, secondary: TissueType): QM
   return order;
 }
 
+/**
+ * Resolves the QMA Triad with Mechanical vs Chemical stimulation logic:
+ * 1. If stimulation is in Nr. 1, 3, 5 (Mechanical):
+ *    - The organ 2 hops further undergoes Tehleel (تحلیل).
+ *    - The opposite organ (3 hops further) is in Taskeen (تسکین).
+ * 2. If stimulation is in Nr. 2, 4, 6 (Chemical):
+ *    - The organ 2 hops further undergoes Taskeen (تسکین).
+ *    - The organ 1 hop further undergoes Tehleel (تحلیل).
+ * 3. The 3-hop opposite remains the antipodal therapeutic target for balanced restoration (Ghaza & Formula).
+ */
 export function resolveTriad(tehreekId: OrderId): QMATriad {
+  const tehreek = getOrder(tehreekId);
+  const stimulationType = getStimulationType(tehreekId);
+  const twoHopId = twoHop(tehreekId);
+  const twoHopOrgan = getOrder(twoHopId);
+
+  // If Mechanical (1,3,5): 2 hops further = Tehleel; opposite (+3 hops) = Taskeen
+  // If Chemical (2,4,6): 2 hops further = Taskeen; next in cycle (+1 hop) = Tehleel
+  const tehleel = stimulationType === 'mechanical' ? twoHopOrgan : getOrder(nextInCycle(tehreekId));
+  const taskeen = stimulationType === 'chemical' ? twoHopOrgan : getOrder(threeHop(tehreekId));
+
   return {
-    tehreek: getOrder(tehreekId),
-    tehleel: getOrder(nextInCycle(tehreekId)),
-    taskeen: getOrder(threeHop(tehreekId)),
+    tehreek,
+    stimulationType,
+    tehleel,
+    taskeen,
+    twoHopOrgan,
   };
 }
 
@@ -275,7 +315,7 @@ export function buildAssessmentResult(
 
   const tehreek = orderFromTissues(primary, secondary);
   const triad = resolveTriad(tehreek.id);
-  const target = triad.taskeen;
+  const target = getOrder(threeHop(tehreek.id));
   const bowelStatus = deriveBowelStatus(answers, questions);
 
   const answered: AnsweredItem[] = questions.flatMap((q) => {

@@ -114,27 +114,27 @@ export const QMA_ORDERS: readonly QMAOrder[] = [
 
 export const ORDER_IDS: readonly OrderId[] = [1, 2, 3, 4, 5, 6];
 
-/** Explanatory copy for the 3-hop triad (sheet 1, rows 12–16). */
+/** Explanatory copy for the stimulation dynamics and triad. */
 export const TRIAD_COPY = {
   tehreek: {
     label: 'Tehreek',
     urdu: 'تحریک',
-    state: 'Hyperactive',
+    state: 'Hyperactive / Stimulated',
     description:
-      'The currently diseased, stimulated organ producing excess pathological humour.',
+      'The currently diseased, stimulated organ producing excess pathological humour. Orders 1, 3, 5 are Mechanical (میکانیکی); Orders 2, 4, 6 are Chemical (کیمیاوی).',
   },
   tehleel: {
     label: 'Tehleel',
     urdu: 'تحلیل',
     state: 'Dissolving / Depleted',
     description:
-      'The organ directly following the stimulated organ in the natural cycle, losing nutrition and strength.',
+      'In Mechanical stimulation (Orders 1, 3, 5), the organ located 2 hops further in the cycle undergoes Tehleel (depletion/dissolution).',
   },
   taskeen: {
     label: 'Taskeen',
     urdu: 'تسکین',
-    state: 'Dormant / Depressed',
+    state: 'Dormant / Sedated',
     description:
-      'The organ exactly three steps across the hexagonal cycle (+3 hops). Stimulating it forces the hyperactive organ into sedation.',
+      'In Chemical stimulation (Orders 2, 4, 6), the organ located 2 hops further in the cycle undergoes Taskeen (sedation/dormancy). Stimulating the opposite organ (+3 hops) restores overall systemic balance.',
   },
 } as const;
